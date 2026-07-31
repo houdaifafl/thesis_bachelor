@@ -1,0 +1,220 @@
+% Template based on: Andreas Claßen, FH Aachen
+
+\documentclass[
+  draft=false,
+  openright,
+  english,
+  fontsize=12pt,
+  paper=a4,
+  twoside=true,
+  parskip=half,
+  sfdefaults=false,
+  titlepage=true,
+  toc=flat,
+  toc=chapterentrywithdots,
+  toc=sectionentrywithdots,
+  bibliography=totoc,
+  captions=nooneline,
+  captions=tablebelow,
+  chapterprefix=false,
+  headings=normal
+]{scrbook}
+
+% =============================================================================
+%  Title page data — fill in your own details
+% =============================================================================
+\newcommand{\erstetitelzeile}{AI Agents in Software Development: Best Practices for Structured Human-Agent Collaboration}
+\newcommand{\artderarbeit}{Bachelor's Thesis}
+\newcommand{\artdesabschlusses}{B.\,Sc.}
+\newcommand{\studiengang}{Computer Science}
+\newcommand{\autor}{Fakih Lanjri Houdaifa}
+\newcommand{\matrikelnr}{3574047}
+\newcommand{\erstpruefer}{}
+\newcommand{\zweitpruefer}{}
+\newcommand{\jahr}{2026}
+\newcommand{\abgabedatum}{}
+\newcommand{\hochschule}{FH Aachen}
+\newcommand{\fachbereich}{}
+\newcommand{\ort}{Aachen}
+
+\author{\autor}
+
+% =============================================================================
+%  Packages
+% =============================================================================
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{float}
+\usepackage[a4paper, twoside, top=2.5cm, bottom=2.5cm, inner=3cm, outer=2.5cm]{geometry}
+
+\renewcommand{\familydefault}{\sfdefault}
+\setkomafont{pageheadfoot}{\sffamily}
+\setkomafont{pagination}{\sffamily}
+
+\usepackage{xcolor}
+\definecolor{fh-mint}{RGB}{0,177,172}
+\colorlet{fhmintfaded}{fh-mint!25}
+
+\usepackage{scrlayer-scrpage}
+\KOMAoptions{headsepline=true, footsepline=true, plainfootsepline=true}
+\automark[section]{chapter}
+
+\usepackage{setspace}
+\setstretch{1.25}
+
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage[pdfencoding=unicode,hidelinks]{hyperref}
+\usepackage[noabbrev]{cleveref}
+
+\usepackage{listings}
+\lstset{
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  frame=single,
+  numbers=left,
+  numberstyle=\tiny,
+  keywordstyle=\bfseries,
+  commentstyle=\itshape,
+  showstringspaces=false
+}
+\usepackage{lipsum}
+\usepackage{subfiles}
+% =============================================================================
+%  Title page formatting
+% =============================================================================
+\def\titelseitemint  {\fontsize{20pt}{19pt}\bfseries\color{fh-mint}\selectfont}
+\def\titelseitebold  {\fontsize{16pt}{20pt}\bfseries\selectfont}
+\def\titelseitenormal{\fontsize{16pt}{20pt}\selectfont}
+
+% =============================================================================
+\begin{document}
+
+\begin{titlepage}
+    \enlargethispage{\baselineskip}
+    \begin{picture}(0pt,0pt)(2cm,-2cm)
+        \put(10, -90){\includegraphics[height=4cm]{fh-logo-right.png}}
+    \end{picture}
+    \vspace*{2cm}
+    \begin{center}
+        \setstretch{1.3}
+        {\titelseitemint \hochschule\par}
+        {\titelseitebold \fachbereich\par}
+        \vspace{\fill}
+        {\titelseitebold \artderarbeit\par}
+        {\titelseitenormal
+            in partial fulfillment of the requirements for the degree of\\
+            \artdesabschlusses \ in \studiengang
+        \par}
+        \vspace{\fill}
+        {\titelseitebold
+            \erstetitelzeile
+        \par}
+        \vspace{\fill}
+        {\titelseitenormal
+            \autor \\[2pt]
+            Matriculation Number \matrikelnr
+            \vspace{\fill}
+            \ort,~\abgabedatum
+            \vspace{\fill}
+            \begin{tabular}{@{}ll@{}}
+                First Examiner:  & \erstpruefer \\
+                Second Examiner: & \zweitpruefer
+            \end{tabular}
+        }
+    \end{center}
+\end{titlepage}
+\clearpage
+
+\chapter*{Declaration}
+I hereby declare that I have written this thesis independently and have not used any
+sources other than those indicated in the bibliography.
+Passages that have been taken verbatim or in substance from published or as yet
+unpublished sources are identified as such.
+The drawings or illustrations in this thesis were created by myself or are provided
+with an appropriate reference to their source.
+This thesis has not been submitted in the same or similar form to any other
+examination authority.
+
+Aachen, \abgabedatum
+
+\thispagestyle{empty}
+\clearpage
+
+\tableofcontents
+\clearpage
+
+\chapter{Introduction}
+\subfile{chapters/Introduction/Background}
+\subfile{chapters/Introduction/Motivation}
+\subfile{chapters/Introduction/ProblemStatement}
+\subfile{chapters/Introduction/ObjectivesOfTheThesis}
+
+\chapter{Foundations}
+\subfile{chapters/Foundations/LargeLanguageModels}
+\subfile{chapters/Foundations/FromLLMsToAIAgents}
+\subfile{chapters/Foundations/ClaudeCodeAsACodingAgent}
+\subfile{chapters/Foundations/PromptEngineering}
+\subfile{chapters/Foundations/MultiAgentSystems}
+\subfile{chapters/Foundations/SoftwareEngineeringFoundations}
+\subfile{chapters/Foundations/HumanAICollaboration}
+
+\chapter{Methodology}
+\subfile{chapters/Methodology/StructureOfThePracticalProject}
+\subfile{chapters/Methodology/ToolsAndModelsUsed}
+\subfile{chapters/Methodology/EvaluationCriteria}
+
+\chapter{Part 1: Unstructured Development}
+\subfile{chapters/Part1-UnstructuredDevelopment/InitialSituationAndObjectives}
+\subfile{chapters/Part1-UnstructuredDevelopment/PromptingWithoutAStructuralApproach}
+\subfile{chapters/Part1-UnstructuredDevelopment/SystemPromptContext}
+\subfile{chapters/Part1-UnstructuredDevelopment/DevelopmentOfTheFirstFeature}
+\subfile{chapters/Part1-UnstructuredDevelopment/TestSuitesAndTestCaseGeneration}
+\subfile{chapters/Part1-UnstructuredDevelopment/ArchitecturalAnalysisOfTheGeneratedSoftware}
+\subfile{chapters/Part1-UnstructuredDevelopment/Observations}
+\subfile{chapters/Part1-UnstructuredDevelopment/CriticalProblemsAndTheTestFailureAnalysisPrinciple}
+
+\chapter{Part 2: Structured Approach (AntiGravity)}
+\subfile{chapters/Part2-StructuredApproach/MotivationForAStructuredApproach}
+\subfile{chapters/Part2-StructuredApproach/AIDevelopmentCharterAndArchitecturalRules}
+\subfile{chapters/Part2-StructuredApproach/ParallelAgentArchitecture}
+\subfile{chapters/Part2-StructuredApproach/DesignReviewsBeforeCoding}
+\subfile{chapters/Part2-StructuredApproach/TestingStrategy}
+\subfile{chapters/Part2-StructuredApproach/ProjectKnowledgeFiles}
+\subfile{chapters/Part2-StructuredApproach/OpenAPISpecificationAutomation}
+\subfile{chapters/Part2-StructuredApproach/IdentificationOfArchitecturalProblems}
+
+\chapter{Comparison of Both Approaches}
+\subfile{chapters/Comparison/ComparisonPart1VsPart2}
+\subfile{chapters/Comparison/FeatureDiversity}
+
+\chapter{Evaluation}
+\subfile{chapters/Evaluation/EvaluationCriteriaAndMethodology}
+\subfile{chapters/Evaluation/QualityOfGeneratedCode}
+\subfile{chapters/Evaluation/QualityAndValidityOfGeneratedTests}
+\subfile{chapters/Evaluation/ArchitecturalConformanceAndDocumentationConsistency}
+\subfile{chapters/Evaluation/EfficiencyAndEffort}
+\subfile{chapters/Evaluation/SummaryAssessment}
+
+\chapter{Best Practices for Human-Agent Collaboration}
+\subfile{chapters/BestPractices/ImportanceOfPromptPrecision}
+\subfile{chapters/BestPractices/RoleOfHumanOversight}
+\subfile{chapters/BestPractices/ArchitecturalGuardrails}
+\subfile{chapters/BestPractices/RecommendationsForMultiAgentWorkflows}
+\subfile{chapters/BestPractices/AvoidingDocumentationDrift}
+
+\chapter{Discussion}
+\subfile{chapters/Discussion/OpportunitiesAndLimitations}
+\subfile{chapters/Discussion/ImplicationsForPractice}
+
+\chapter{Conclusion and Outlook}
+\subfile{chapters/Conclusion/ConclusionAndOutlook}
+
+\bibliographystyle{plain}
+\bibliography{references}
+
+\end{document}
