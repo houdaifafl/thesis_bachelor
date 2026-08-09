@@ -1,3 +1,14 @@
-%% TODO: write content for this section
 \section{Problem Statement}
+
+AI coding agents are being increasingly adopted in both industry and academic settings. However, systematic understanding of how the structure of human-agent collaboration --- rather than solely the capability of the underlying model --- influences the quality, architectural soundness, and reliability of resulting software remains limited. Existing research on AI-assisted software development has often focused on model capabilities, benchmarks, or individual code-generation tasks, while broader aspects of the development process --- including requirements interpretation, architectural planning, iterative implementation, testing, review, and documentation maintenance --- require further investigation.
+
+Several specific challenges motivate the work presented in this thesis:
+
+\begin{enumerate}
+    \item \textbf{Limited structural comparison.} Existing work provides limited empirical comparison between unstructured, prompt-driven interaction with AI coding agents and more structured, architecture-first development approaches, particularly when both approaches are examined within the same software project.
+    \item \textbf{Unclear impact of architectural constraints.} It remains unclear to what extent architectural rules, mandatory design reviews, and the separation of responsibilities across specialized agents can improve the quality and consistency of AI-generated software compared with a single agent operating with fewer structural constraints.
+    \item \textbf{Gaps in testing and validation.} AI coding agents can generate tests that execute successfully without necessarily providing sufficient validation of the intended behavior. This raises the question of how testing and verification should be structured when substantial parts of both implementation and test generation are delegated to AI agents.
+    \item \textbf{Documentation drift.} As AI agents modify software iteratively, maintaining consistency between the implementation and related specifications, such as OpenAPI documents, becomes an important maintainability challenge.
+    \item \textbf{Limited consolidated guidance.} Despite the growing adoption of AI coding agents, empirically grounded guidance on how developers should structure human-agent collaboration across prompting, architecture, review, testing, and documentation remains fragmented.
+\end{enumerate}
 

@@ -1,3 +1,8 @@
-%% TODO: write content for this section
 \section{Background}
+
+Large Language Models have moved a long way from being simple autocomplete engines for code. Today, tools built on top of them act as genuine coding agents: they can read a set of requirements, plan an implementation, write entire features, generate their own tests, and reason, at least to some degree, about the architecture of the software they are building. Modern coding agents can be integrated directly into conventional development environments, allowing developers to hand off substantial parts of the implementation work to an AI agent while still reviewing and supervising what it produces.
+
+More recently, agent-first development environments have emerged that extend this concept further. Rather than relying on a single agent working through a linear sequence of tasks, these environments can support the orchestration of several specialized agents, each responsible for different parts of the development workflow, from planning and architectural design to implementation and verification.
+
+This shift changes the nature of software development in a subtle but important way. In traditional development, the person writing the code is also the one reasoning about it. When an AI agent takes over the implementation, a layer is inserted between the idea and the code: the agent interprets instructions, makes its own architectural choices, and produces artifacts that a human then has to review, correct, or approve. How good the resulting software turns out to be depends not only on how capable the underlying model is, but just as much on how the collaboration between human and agent is set up in the first place --- how precise the prompts are, whether any architectural boundaries are defined at all, and what kind of review process, if any, the agent's work has to pass.
 
