@@ -2,11 +2,11 @@
 
 \documentclass[
   draft=false,
-  openright,
+  openany,
   english,
   fontsize=12pt,
   paper=a4,
-  twoside=true,
+  twoside=false,
   parskip=half,
   sfdefaults=false,
   titlepage=true,
@@ -47,7 +47,8 @@
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
 \usepackage{float}
-\usepackage[a4paper, twoside, top=2.5cm, bottom=2.5cm, inner=3cm, outer=2.5cm]{geometry}
+\usepackage{enumitem}
+\usepackage[a4paper, twoside=false, top=2.5cm, bottom=2.5cm, left=3cm, right=2.5cm]{geometry}
 
 \renewcommand{\familydefault}{\sfdefault}
 \setkomafont{pageheadfoot}{\sffamily}
@@ -84,6 +85,55 @@
 }
 \usepackage{lipsum}
 \usepackage{subfiles}
+
+% -- Dark, editor-style Python code blocks -----------------------------------
+\usepackage{tcolorbox}
+\tcbuselibrary{listings,skins,breakable}
+
+\definecolor{codebg}{HTML}{1E1E1E}
+\definecolor{codefg}{HTML}{D4D4D4}
+\definecolor{codekeyword}{HTML}{C586C0}
+\definecolor{codestring}{HTML}{6A9955}
+\definecolor{codetype}{HTML}{4EC9B0}
+
+\lstdefinelanguage{PythonPlus}[]{Python}{
+  morekeywords=[2]{str, bool, int, float, list, dict, tuple, set, None, True, False}
+}
+
+\lstdefinestyle{pythondark}{
+  language=PythonPlus,
+  backgroundcolor=\color{codebg},
+  basicstyle=\ttfamily\small\color{codefg},
+  keywordstyle=\color{codekeyword}\bfseries,
+  keywordstyle=[2]\color{codetype},
+  stringstyle=\color{codestring},
+  commentstyle=\color{codestring}\itshape,
+  identifierstyle=\color{codefg},
+  numbers=none,
+  showstringspaces=false,
+  breaklines=true,
+  frame=none,
+  xleftmargin=0pt,
+  framexleftmargin=0pt
+}
+
+\newtcblisting{pythoncode}{
+  enhanced,
+  breakable,
+  listing only,
+  listing options={style=pythondark},
+  colback=codebg,
+  colframe=codebg,
+  boxrule=0.4pt,
+  arc=2mm,
+  top=3mm, bottom=2mm, left=2mm, right=2mm,
+  attach boxed title to top left={yshift=-2mm, xshift=3mm},
+  boxed title style={colback=codebg, boxrule=0pt, arc=0pt, top=0pt, bottom=0pt, left=0pt, right=0pt},
+  title={\ttfamily\footnotesize\color{gray!70!white} python}
+}
+
+% -- Highlighted inline code snippets ----------------------------------------
+\lstdefinestyle{inlinecode}{basicstyle=\fontfamily{pcr}\bfseries\selectfont\normalsize}
 % =============================================================================
 %  Title page formatting
 % =============================================================================
@@ -93,6 +143,7 @@
 
 % =============================================================================
 \begin{document}
+\flushbottom
 
 \begin{titlepage}
     \enlargethispage{\baselineskip}
