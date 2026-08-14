@@ -1,3 +1,12 @@
-%% TODO: write content for this section
 \section{Tools and Models Used}
+
+\textbf{Model.} Both parts of the practical project were developed using the same underlying language model, Claude Sonnet 4.6. This was a deliberate choice: since this thesis is concerned with how the structure of a collaboration affects the outcome, holding the model constant across both parts removes model capability as a confounding variable --- any differences observed between Part 1 and Part 2 can be attributed to the collaboration structure and the presence or absence of process constraints, not to one part having access to a stronger or newer model. In Part 2, Claude Sonnet 4.6 was the model powering all three agents in the Antigravity workflow --- the Architect Agent, the Implementer Agent, and the Post-Implementation Review Agent --- rather than a different model being assigned to each role.
+
+\textbf{Development environments.} Part 1 was built using Claude Code as a coding agent integrated directly into Visual Studio Code, interacting with the model through a single conversational thread. Part 2 was built using Google Antigravity, an agent-first development environment that natively supports the multi-agent, role-separated workflow described earlier, including persistent project knowledge files that agents can read from and write to across sessions.
+
+\textbf{Backend tooling.} The backend was implemented in Python 3.13.2 within a virtual environment (with compatibility additionally checked against Python 3.12.4), using the Flask 3.1.3 web framework structured around an application-factory pattern. Backend testing was carried out with pytest 9.0.3, organized into 19 test modules covering the application's routes, services, and models.
+
+\textbf{Frontend tooling.} The frontend was implemented in React 19.2.5, scaffolded with Create React App 5.0.1, and run on Node 20.14.0 with npm 10.7.0. Frontend testing used Jest together with React Testing Library for component-level smoke tests, consistent with the frontend testing conventions later enforced under Part 2's architectural rules.
+
+\textbf{API documentation tooling.} The application's OpenAPI specification (\texttt{openapi.yaml}) was maintained by hand rather than generated automatically from code. To keep this specification synchronized with the actual API surface, a custom pytest-based drift-checker was written to compare the documented endpoints against the implemented routes, rather than relying on an external schema-validation library or code-generation tool.
 
