@@ -1,3 +1,24 @@
-%% TODO: write content for this section
 \section{Test Suites and Test Case Generation}
+
+Testing of the login and registration feature covered only the backend.
+
+Backend tests were generated only after the authentication logic had already been implemented and refined, using the prompt: "Based on the signup and login functionality, generate backend tests using pytest. Cover valid cases, invalid input, duplicate users, and wrong credentials. Do not modify existing code." The resulting suite covered valid signup requests, valid login requests, missing input fields, invalid credentials, duplicate usernames, duplicate email addresses, and empty request bodies, and was run against the backend authentication endpoints using pytest.
+
+The generated test suite itself served as a check on the refinements made during the earlier review: some of the generated tests would not have passed had the validation problems identified there not already been fixed. The test case for duplicate email validation, \texttt{test\_duplicate\_email}, is cited as an example --- it checks for exactly the flaw the earlier refinement of the validation behavior had already corrected, meaning the test would have failed had that refinement not already been in place by the time the test was generated (\Cref{fig:pytest-auth-suite-passing}).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.55\linewidth]{Bilder/Part1-UnstructuredDevelopment/pytest_auth_suite_passing.png}
+    \caption{Full authentication test suite passing after the validation refinements were applied.}
+    \label{fig:pytest-auth-suite-passing}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\linewidth]{Bilder/Part1-UnstructuredDevelopment/ai_testing_evaluation_framework.png}
+    \caption{The five-dimension framework used to evaluate the quality of the AI-generated test suite.}
+    \label{fig:ai-testing-evaluation-framework}
+\end{figure}
+
+The generated suite itself was then evaluated along several dimensions (\Cref{fig:ai-testing-evaluation-framework}). Coverage was judged broad, spanning the core authentication scenarios and their edge cases; correctness was judged sound, in that the tests reflected the intended backend behavior rather than only checking superficial conditions; and completeness was judged adequate, with no major authentication scenario identified as missing. An overgeneration check found no unnecessary or redundant tests --- the suite stayed focused on the implemented authentication functionality rather than expanding into unrelated cases. A fifth dimension, the agent's debugging capability --- whether it could diagnose and fix a failing test on its own --- was identified as a further evaluation criterion.
 
