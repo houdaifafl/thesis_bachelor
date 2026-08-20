@@ -1,3 +1,38 @@
-%% TODO: write content for this section
 \section{Critical Problems and the Test Failure Analysis Principle}
+
+\raggedbottom
+Beyond the problems already discussed, Part 1's codebase carried a number of further architectural weaknesses by the time it was handed over to be continued. Some of the more significant ones are summarized below.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{p{0.30\linewidth} p{0.60\linewidth}}
+\toprule
+\textbf{Location} & \textbf{Weakness} \\
+\midrule
+\textbf{\texttt{AuthContext.js}} & User identity stored in local storage, which is readable by any script running on the page \\
+\textbf{\texttt{app.py}} & Database connection string hardcoded directly in source rather than read from configuration \\
+\textbf{\texttt{app.py}} & CORS configured to accept requests from any origin \\
+\textbf{\texttt{api\_client\_service.py}} & A service function returns a framework-level HTTP response object instead of plain data, mixing response formatting into a layer that should only handle logic \\
+\textbf{\texttt{collection\_model.py}} & A foreign key linking a collection to its workspace was left optional when it should always be required \\
+\textbf{\texttt{collection\_service.py}}, \textbf{\texttt{request\_service.py}} & Use of a deprecated ORM lookup method \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+One further issue --- a security vulnerability in how the backend identified which user a request belonged to --- is significant enough to describe in full.
+
+The implementation built during Part 1 expected the client to pass a plain-text \textbf{\texttt{user\_id}}, either as a query parameter (\textbf{\texttt{GET /api/workspaces?user\_id=1}}) or within a JSON request body, and the server trusted whatever value it was given without any further verification. This created several concrete problems at once: since nothing cryptographically tied the \textbf{\texttt{user\_id}} to the authenticated user, a request could simply change the value in the URL --- for instance from \textbf{\texttt{user\_id=1}} to \textbf{\texttt{user\_id=2}} --- and potentially view, create, or delete another user's workspaces and collections; passing an identifier this way also meant it could end up stored in browser history, server access logs, and proxy logs, none of which are places a user identifier should persist; and on the frontend, every component that needed to make an authenticated call had to fetch the user ID from storage and pass it explicitly to each service function, producing repetitive boilerplate throughout the codebase. This pattern was not an isolated oversight in one endpoint --- it was how the application identified its user everywhere, and it remained the case throughout Part 1. It was left unresolved for the whole of this stage of development, and was only corrected later, when the identification mechanism was replaced with a token verified by a cryptographic signature rather than a value the client could simply supply on its own.
+
+The second issue began as an ordinary test failure. On the first run of the collections test suite, two tests failed: one checking that all collections in a workspace were returned, and one checking that a deleted collection no longer appeared in that list. Both tests operated on the default workspace created at signup and assumed a default collection already existed inside it --- but neither had ever called the collections list endpoint before performing its write operations. The actual cause was that signing up created a workspace directly, without going through the same function used to create a workspace elsewhere in the application, and that function was the only place responsible for seeding a default collection. The collection was therefore never created at signup at all; it only came into existence the first time the collections list endpoint happened to be called, since that endpoint seeded it lazily on demand.
+
+The fix initially applied was to add a call to that same list endpoint at the start of each failing test, before its write operations ran, which reliably triggered the lazy seeding and made both tests pass. But this addressed the symptom rather than the cause: the real problem was that two different paths for creating a workspace existed in the application --- signing up, and calling the workspace-creation endpoint directly --- and only one of them seeded a default collection. The test had correctly caught a genuine inconsistency in the implementation; adding a setup step to the test made it pass without resolving that inconsistency, leaving the same divergent behavior in place for any other code path that relied on a workspace already having its default collection. The change that would have actually addressed the cause was making the signup path call the same workspace-creation function used elsewhere, so that a workspace was seeded identically no matter how it was created.
+
+This case is what motivated the Test Failure Analysis Principle: a failing test only shows that the behavior the test expects and the behavior the implementation produces disagree, and it does not by itself say which of the two is wrong. Determining that requires comparing both against the actual system requirement, and three outcomes are possible. If the test reflects the requirement correctly and the implementation diverges from it, the implementation should be changed. If the implementation already satisfies the requirement and the test expects something that was never actually specified, the test should be changed instead. And if neither the test nor the implementation can be clearly judged against a requirement that was never precisely defined in the first place, the requirement itself needs to be clarified before either side is touched (\Cref{fig:test-failure-analysis-principle}).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{Bilder/Part1-UnstructuredDevelopment/test_failure_analysis_principle.png}
+    \caption{Decision flow for diagnosing a failing test: which side --- the test or the implementation --- holds the incorrect assumption.}
+    \label{fig:test-failure-analysis-principle}
+\end{figure}
 
