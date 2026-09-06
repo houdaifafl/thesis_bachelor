@@ -1,3 +1,8 @@
-%% TODO: write content for this section
 \section{OpenAPI Specification Automation and Avoiding Documentation Drift}
+
+Two approaches were available for keeping the application's OpenAPI specification consistent with its actual implementation. The specification could be generated automatically from the backend source code itself, using annotations or decorators placed on each route, which guarantees consistency by construction but requires maintaining that metadata on every endpoint and ties the codebase more tightly to the generation tooling. Alternatively, the specification could remain a manually written file, with an automated test added to check it against the application's actual routes and catch any mismatch during testing rather than preventing it from being written in the first place.
+
+Part 2 adopted the second approach. The specification, \textbf{\texttt{openapi.yaml}}, continued to be written and maintained by hand, but a dedicated pytest module was added that inspects the Flask application's routing table at runtime and compares it against the specification file, asserting that every implemented route and HTTP method is documented and that no documented endpoint is missing from the implementation. If a route existed in the code but not in the specification, or vice versa, this test would fail, which meant a mismatch could be caught during the same testing cycle already required for every other change rather than being noticed only when someone happened to read the specification.
+
+This kept the backend code itself free of the extra annotations an auto-generation approach would have required, while still closing the gap that documentation drift depends on: a change that touched the API's actual surface without a corresponding update to its specification would no longer pass silently, since the routes-versus-specification check ran as part of the same testing discipline already required by the rest of Part 2's rules.
 

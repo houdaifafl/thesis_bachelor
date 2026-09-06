@@ -1,3 +1,10 @@
-%% TODO: write content for this section
 \section{Identification of Architectural Problems and Weaknesses}
+
+Two distinct mechanisms were used in Part 2 to surface problems in the application, operating at different points in the project.
+
+The first was the inherited weaknesses catalogued at the outset, already discussed as the starting condition Part 2 took over from Part 1. Rather than being left as background knowledge, each of these was treated as a task in its own right, going through the same Architect--human--Implementer--Reviewer sequence as any newly added feature: a plan was produced explaining how the weakness would be addressed, a human approved it before any code was written, the fix was implemented and verified, and the result was reviewed afterward. Fixing a known problem this way was not privileged over adding new functionality --- it followed the identical process, which meant a fix could be rejected at the design-review stage in exactly the same way a new feature's plan could be.
+
+The second mechanism was a dedicated security audit carried out later in Part 2, distinct from working through the inherited list, aimed at finding problems that had not already been identified rather than resolving ones that had. This was split into two stages: a systematic review of the entire application --- frontend, backend, database, and API together --- to identify vulnerabilities, followed by a separate stage in which each identified vulnerability was patched and the fix specifically verified rather than merely applied and assumed correct. Structuring the audit this way kept discovery and remediation as separate steps, so that a vulnerability had to be explicitly confirmed before any change was made in response to it, rather than a fix being written on the basis of a suspicion that turned out to be wrong.
+
+Together, these two mechanisms meant that problem identification in Part 2 was not something that happened only once, at the project's outset. The initial catalogue addressed what had already been observed; the later audit was a deliberate second pass, run independently of any prior list, checking for what a first pass might have missed.
 
