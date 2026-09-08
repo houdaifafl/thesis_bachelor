@@ -1,3 +1,29 @@
-%% TODO: write content for this section
 \section{Feature Diversity}
+
+Part 1's feature set and Part 2's additions differ not just in what each does, but in what kind of engineering problem each one poses to whoever is building it. That distinction is the subject of this section.
+
+Part 1's feature set is structurally uniform beneath its range:
+
+\begin{itemize}[itemsep=6pt, parsep=0pt, topsep=6pt]
+    \item Authentication, workspace management, collection management, and request management are each a create/rename/delete operation on a resource the current user owns.
+    \item The request builder is a configuration form: a method and URL, key-value tables for parameters and headers that auto-add a row as the last one fills, a body tab offering none, form-data, x-www-form-urlencoded, or raw text, and an authorization tab injecting a header for no auth, a bearer token, or basic auth.
+    \item Request execution fires that configuration as a single HTTP call.
+    \item The response panel formats whatever comes back --- status code, timing, pretty-printed JSON.
+    \item Sidebar search filters, client-side, across records the user already owns.
+\end{itemize}
+
+None of this requires reasoning about another user's data, aggregating many records into a derived value, or reacting to events elsewhere in the system --- every feature reduces to "manage one resource" or "fill in and submit a form."
+
+Part 2's additions each introduce a shape Part 1 never had to handle:
+
+\begin{itemize}[itemsep=6pt, parsep=0pt, topsep=6pt]
+    \item Roles --- Super Admin globally, Owner/Editor/Viewer at the workspace level --- are access-control logic that branches on who is acting relative to whose data, not on whether a record belongs to the current user, and this logic has to be threaded through nearly every existing endpoint and component rather than living in one new file.
+    \item Inline request comments introduce threaded, collaborative content shared by multiple users on the same request at once, a data shape and a concurrency concern present in no Part 1 feature.
+    \item Activity feed and logging is a cross-cutting observability feature by construction: a single chronological ledger has to receive events from settings changes, collection and request edits, membership changes, and execution runs alike, so the feature's correctness depends on every one of those other subsystems correctly emitting an event, not on any logic contained within the feature itself.
+    \item Performance and analytics is an aggregation feature --- KPIs, status-code distributions, and per-endpoint analysis computed over a window of past execution records, rather than a read or write of a single one.
+    \item Request export is a stateless, client-side data-transformation utility: it serializes the same request-configuration state the builder already holds into a cURL string or a downloadable JSON file, with no backend persistence involved at all.
+    \item OpenAPI automation is not a user-facing feature in the first place --- it is tooling that checks two other artifacts, the routing table and the specification file, against each other.
+\end{itemize}
+
+Part 1's feature set reduces to one recurring shape: a single resource, owned by one user, managed through create, rename, and delete, and displayed through a configuration form. The Charter was written to govern that shape. It had never been tested against anything else. Part 2's additions were something else entirely --- access control based on who is acting rather than who owns the data, content shared live between multiple users, a ledger fed by every other part of the application, aggregation over a history of past records, a stateless serializer with no backend state, and a consistency check between two non-code artifacts. Six different problems, not six more versions of the one Part 1 had already solved.
 
