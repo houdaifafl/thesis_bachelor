@@ -1,3 +1,10 @@
-%% TODO: write content for this section
 \section{Efficiency and Effort (Human vs. Agent)}
+
+This section applies process and effort to Part 1 and then to Part 2 --- not just how much correction a feature needed, but who did the work of catching the problem in the first place.
+
+In Part 1, the human carried that burden almost entirely. The three architectural retrofits were each only caught because a person noticed the pattern spreading and added a rule to CLAUDE.md --- the agent itself never flagged the missing service layer, the growing MainPage.js, or the scattered localStorage reads. The collections test case is the same pattern at a smaller scale: the agent produced a fix that made the test pass, and it took a human reasoning through the failure afterward to find what the fix had actually missed. The agent's role throughout was executing a correction once told what was wrong, not identifying that something was wrong in the first place.
+
+Part 2 shifted a share of that detection work onto the agents themselves. The super-admin plan's privacy concern was not caught by a human reviewing finished code --- it was flagged by the Architect Agent, inside the plan, before any code existed; the human's role there was to review and approve a concern already surfaced, not to discover it. The Post-Implementation Review Agent's six-point checklist works the same way: it inspects the modified files and produces a rated report on its own, and the human's job narrows to deciding whether to fix, defer, or accept what the report already found.
+
+The two parts differ less in total effort than in its division. Part 1's human did the diagnosing and the agent did the fixing once told. Part 2's agents did more of the diagnosing, and the human's role moved from catching problems to approving what the agents had already caught.
 

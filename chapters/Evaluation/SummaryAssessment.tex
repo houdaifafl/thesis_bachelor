@@ -1,3 +1,20 @@
-%% TODO: write content for this section
 \section{Summary Assessment: Part 1 vs. Part 2}
+
+Chapter 7 applied four criteria to both parts. The table below brings the four verdicts together.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.16\linewidth} >{\raggedright\arraybackslash}p{0.36\linewidth} >{\raggedright\arraybackslash}p{0.36\linewidth}}
+\toprule
+\textbf{Criterion} & \textbf{Part 1} & \textbf{Part 2} \\
+\midrule
+Specification Satisfaction & Satisfied what was explicitly asked; missed what was assumed, sometimes for the whole phase. & Caught more gaps earlier; treated inherited gaps as work to complete rather than debt to carry. \\
+Test Validity & Assessed informally, feature by feature; a passing suite could still check too little or the wrong thing. & A structural requirement for every feature; a passing result tied explicitly to a stated requirement. \\
+Architectural Conformance & Checked two of six categories, only once a problem had already spread. & Checks all six by rule, demonstrated in full for at least one feature. \\
+Efficiency and Effort (Human vs. Agent) & Human diagnosed problems; agent executed fixes once told. & Agents surfaced more problems themselves; human's role shifted to approving what was already found. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Across all four criteria, the same shift recurs: from problems caught late, informally, and mostly by a human, to problems caught earlier, by rule, with the work of detection shared more evenly between human and agent.
 
