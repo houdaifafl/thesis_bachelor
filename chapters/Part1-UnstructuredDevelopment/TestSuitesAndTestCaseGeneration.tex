@@ -2,7 +2,17 @@
 
 Testing of the login and registration feature covered only the backend.
 
-Backend tests were generated only after the authentication logic had already been implemented and refined, using the prompt: "Based on the signup and login functionality, generate backend tests using pytest. Cover valid cases, invalid input, duplicate users, and wrong credentials. Do not modify existing code." The resulting suite covered valid signup requests, valid login requests, missing input fields, invalid credentials, duplicate usernames, duplicate email addresses, and empty request bodies, and was run against the backend authentication endpoints using pytest.
+Backend tests were generated only after the authentication logic had already been implemented and refined, using the prompt shown in \Cref{lst:backend-test-prompt}. The resulting suite covered valid signup requests, valid login requests, missing input fields, invalid credentials, duplicate usernames, duplicate email addresses, and empty request bodies, and was run against the backend authentication endpoints using pytest.
+
+\begin{listing}[H]
+\begin{center}
+\begin{promptbox}
+Based on the signup and login functionality, generate backend tests using pytest. Cover valid cases, invalid input, duplicate users, and wrong credentials. Do not modify existing code.
+\end{promptbox}
+\end{center}
+\caption{Prompt used to generate the backend test suite for the authentication feature.}
+\label{lst:backend-test-prompt}
+\end{listing}
 
 The generated test suite itself served as a check on the refinements made during the earlier review: some of the generated tests would not have passed had the validation problems identified there not already been fixed. The test case for duplicate email validation, \texttt{test\_duplicate\_email}, is cited as an example --- it checks for exactly the flaw the earlier refinement of the validation behavior had already corrected, meaning the test would have failed had that refinement not already been in place by the time the test was generated (\Cref{fig:pytest-auth-suite-passing}).
 
@@ -16,7 +26,7 @@ The generated test suite itself served as a check on the refinements made during
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\linewidth]{Bilder/Part1-UnstructuredDevelopment/ai_testing_evaluation_framework.png}
-    \caption{The five-dimension framework used to evaluate the quality of the AI-generated test suite.}
+    \caption{The five evaluation dimensions used in this thesis to assess the quality of the AI-generated test suite.}
     \label{fig:ai-testing-evaluation-framework}
 \end{figure}
 

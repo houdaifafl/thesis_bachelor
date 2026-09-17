@@ -136,6 +136,38 @@
 
 % -- Highlighted inline code snippets ----------------------------------------
 \lstdefinestyle{inlinecode}{basicstyle=\fontfamily{pcr}\bfseries\selectfont\normalsize}
+
+% -- Listing float type (verbatim prompts/code, separate from Figures) -------
+\floatstyle{plain}
+\newfloat{listing}{H}{lop}[chapter]
+\floatname{listing}{Listing}
+\crefname{listing}{listing}{listings}
+\Crefname{listing}{Listing}{Listings}
+
+% -- Shaded, bordered box for Listing content --------------------------------
+\definecolor{listingbg}{gray}{0.90}
+\definecolor{listingborder}{gray}{0.6}
+\lstdefinestyle{promptstyle}{
+  basicstyle=\fontfamily{pcr}\selectfont\fontsize{10}{12}\selectfont,
+  breaklines=true,
+  breakindent=0pt,
+  numbers=none,
+  showstringspaces=false,
+  columns=fullflexible,
+  keepspaces=true,
+  language=
+}
+\newtcblisting{promptbox}{
+  enhanced,
+  listing only,
+  listing options={style=promptstyle},
+  colback=listingbg,
+  colframe=listingborder,
+  boxrule=0.5pt,
+  arc=1mm,
+  left=4mm, right=4mm, top=3mm, bottom=3mm,
+  width=0.92\linewidth,
+}
 % =============================================================================
 %  Title page formatting
 % =============================================================================
@@ -210,6 +242,7 @@ Aachen, \abgabedatum
 \chapter{Foundations}
 \subfile{chapters/Foundations/LargeLanguageModels}
 \subfile{chapters/Foundations/FromLLMsToAIAgents}
+\raggedbottom
 \subfile{chapters/Foundations/MultiAgentSystems}
 \subfile{chapters/Foundations/HumanAICollaboration}
 \subfile{chapters/Foundations/PromptEngineering}
@@ -218,11 +251,13 @@ Aachen, \abgabedatum
 \subfile{chapters/Foundations/OpenAPISpecificationsAndDocumentationDrift}
 
 \chapter{Methodology}
+\flushbottom
 \subfile{chapters/Methodology/StructureOfThePracticalProject}
 \subfile{chapters/Methodology/ToolsAndModelsUsed}
 \subfile{chapters/Methodology/EvaluationCriteria}
 
 \chapter{Part 1: Unstructured Development}
+\raggedbottom
 \subfile{chapters/Part1-UnstructuredDevelopment/InitialSituationAndObjectives}
 \subfile{chapters/Part1-UnstructuredDevelopment/PromptingWithoutAStructuralApproach}
 \subfile{chapters/Part1-UnstructuredDevelopment/SystemPromptContext}

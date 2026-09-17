@@ -2,7 +2,23 @@
 
 These same three problems --- the missing service layer, the monolithic layout component, and the lack of centralized authentication state --- were introduced earlier as the reason several of \textbf{\texttt{CLAUDE.md}}'s rules were added only partway through development. Here they are examined in full: what each problem actually was, why it occurred, and how it was resolved.
 
-In each case, the problem was only identified after it had already spread across multiple files, and the fix took the form of a retrofit rather than a decision made in advance.
+In each case, the problem was only identified after it had already spread across multiple files, and the fix took the form of a retrofit rather than a decision made in advance. \Cref{lst:react-architecture-rules} shows the React Architecture Rules section of \texttt{CLAUDE.md} that these three retrofits ultimately produced.
+
+\begin{listing}[H]
+\begin{center}
+\begin{promptbox}
+## React Architecture Rules (enforce on every new component)
+- File naming: All component files must be PascalCase (e.g. `Sidebar.js`, not `sidebar.js`)
+- Folder structure: Group components by feature under `src/components/<feature>/`. Shared/reusable pieces go in `src/components/shared/`. Auth pages go in `src/components/auth/`
+- Service layer: Every API call must live in `src/services/`. Components import and call service functions -- they never construct `fetch` calls themselves. The base URL lives only in `src/services/api.js`
+- Component size: If a component exceeds ~100 lines or handles more than one visual region, split it. Pages are layout shells that own state; sub-components are presentational and receive props
+- State ownership: State lives at the lowest parent that needs to share it. Do not duplicate state across siblings. Do not read `localStorage` in more than one place -- lift it into a context or the top-level parent
+- No dead files: Delete placeholder, boilerplate, or abandoned components immediately -- do not leave them in the tree
+\end{promptbox}
+\end{center}
+\caption{React Architecture Rules section of \texttt{CLAUDE.md}, added in response to the three retrofits discussed in this section.}
+\label{lst:react-architecture-rules}
+\end{listing}
 
 The first problem was the absence of a centralized service layer. Raw \textbf{\texttt{fetch}} calls were written directly inside React components --- each component hardcoded its own base URL, defined its own headers, and handled errors independently, rather than going through a shared function. This had several consequences: changing the base URL required edits across every component that made a request, adding a global header such as an auth token had to be repeated in every call individually, the same logical API call could diverge between two components if each implemented it slightly differently, and components ended up responsible for both UI logic and data-fetching logic at once. The fix was to remove all raw \textbf{\texttt{fetch}} calls from components and move them into dedicated service files, with a single base URL defined once in a shared \textbf{\texttt{api.js}} module; components were changed to call service functions exclusively, without constructing HTTP requests themselves.
 
@@ -10,5 +26,5 @@ The second problem was excessive responsibility concentrated in a single compone
 
 The third problem was the absence of a centralized authentication state. User identity --- user ID, email, first name --- was stored in local storage and read directly by whichever component needed it, independently of every other component doing the same: \textbf{\texttt{MainPage.js}} read the first name to display the workspace name, \textbf{\texttt{WorkspaceDropdown.js}} read both the user ID and the email on its own, and \textbf{\texttt{TopBar.js}} depended on workspace state that itself depended on the user ID. This produced three related consequences: there was no single place in the component tree representing who was logged in, so checking authentication meant validating local storage separately in every component that needed it; runtime changes such as logging out or changing the email had no way to propagate, since doing so would have meant finding and updating every individual read of local storage; and the problem would only get worse as more features needed user data, since each new component would be likely to repeat the same pattern rather than break from it. The fix was to introduce a single React context, \textbf{\texttt{AuthContext}}, that reads local storage once on mount and exposes the user object through a \textbf{\texttt{useAuth()}} hook; components stopped reading local storage directly and called the hook instead, and logging out was handled in one place, clearing storage and updating state together so that every dependent component re-rendered automatically.
 
-None of these three problems were caught before they occurred, and in each case the individual decision that caused them was locally reasonable at the time it was made --- the same pattern of architectural drift described earlier, playing out at the level of a single project instead of across separate tasks. What was missing was not correctness but a persistent point of reference: an existing service layer to extend, an existing component boundary to respect, an existing context to read from. Without one, each new piece of code was judged only against whether the feature worked, not against whether it stayed consistent with how the rest of the application already did the same thing.
+None of these three problems were caught before they occurred, and in each case the individual decision that caused them was locally reasonable for the agent at the time it was made --- the same pattern of architectural drift described earlier, playing out at the level of a single project instead of across separate tasks. What was missing was not correctness but a persistent point of reference: an existing service layer to extend, an existing component boundary to respect, an existing context to read from. Without one, each new piece of code was judged only against whether the feature worked, not against whether it stayed consistent with how the rest of the application already did the same thing.
 
