@@ -168,6 +168,30 @@
   left=4mm, right=4mm, top=3mm, bottom=3mm,
   width=0.92\linewidth,
 }
+\lstdefinestyle{codestyle}{
+  language=Python,
+  basicstyle=\fontfamily{pcr}\selectfont\fontsize{10}{12}\selectfont,
+  keywordstyle=\color{codekeyword}\bfseries,
+  stringstyle=\color{codestring},
+  commentstyle=\color{gray!60!black}\itshape,
+  breaklines=true,
+  breakindent=0pt,
+  numbers=none,
+  showstringspaces=false,
+  columns=fullflexible,
+  keepspaces=true
+}
+\newtcblisting{codebox}{
+  enhanced,
+  listing only,
+  listing options={style=codestyle},
+  colback=listingbg,
+  colframe=listingborder,
+  boxrule=0.5pt,
+  arc=1mm,
+  left=4mm, right=4mm, top=3mm, bottom=3mm,
+  width=0.92\linewidth,
+}
 % =============================================================================
 %  Title page formatting
 % =============================================================================
@@ -268,7 +292,7 @@ Aachen, \abgabedatum
 \subfile{chapters/Part1-UnstructuredDevelopment/CriticalProblemsAndTheTestFailureAnalysisPrinciple}
 
 \chapter{Part 2: Structured Approach (AntiGravity)}
-\flushbottom
+\raggedbottom
 \subfile{chapters/Part2-StructuredApproach/MotivationForAStructuredApproach}
 \subfile{chapters/Part2-StructuredApproach/AIDevelopmentCharterAndArchitecturalRules}
 \subfile{chapters/Part2-StructuredApproach/ParallelAgentArchitecture}

@@ -2,7 +2,40 @@
 
 As a codebase grows, an agent working on it runs into two related problems. The first is that the codebase eventually becomes too large to fit entirely into the agent's active context at once, so no single prompt can simply include everything relevant. The second is a kind of overhead that exists even before the first problem becomes acute: before writing any code, the agent has to spend time running search tools, opening files, and guessing where a given piece of logic actually lives, none of which is productive work in itself.
 
-Part 2 addressed both by maintaining a persistent set of project knowledge files, split into two distinct kinds. The first is a rulebook --- the AI Development Charter described earlier --- which states what an agent is and is not allowed to do, independent of where anything in the codebase happens to be located. The second kind is a pair of structure maps, one for the backend and one for the frontend, which instead describe where things currently are: the actual file and folder layout, which module is responsible for which functionality, and how the pieces of the application connect to each other. Where the rulebook answers "what are the rules," the maps answer "where is everything and how is it organized" --- and keeping the two separate means an agent can consult whichever kind of question it actually has, rather than searching through one large, undifferentiated document for both.
+Part 2 addressed both by maintaining a persistent set of project knowledge files, split into two distinct kinds. The first is a rule set --- \texttt{AGENTS.md}, described earlier --- which states what an agent is and is not allowed to do, independent of where anything in the codebase happens to be located. The second kind is a pair of structure maps, \texttt{BACKEND\_STRUCTURE.md} and \texttt{FRONTEND\_STRUCTURE.md}, which instead describe where things currently are: the actual file and folder layout, which module is responsible for which functionality, and how the pieces of the application connect to each other. Where the rule set answers "what are the rules," the maps answer "where is everything and how is it organized" --- and keeping the two separate means an agent can consult whichever kind of question it actually has, rather than searching through one large, undifferentiated document for both. \Cref{lst:frontend-structure-tree} shows an excerpt of \texttt{FRONTEND\_STRUCTURE.md}'s directory overview.
 
-Unlike the rulebook, which is written once and then only amended deliberately, the structure maps are treated as living documents that are expected to fall out of date unless something keeps them current. This is built directly into the workflow rather than left to chance: producing an updated structure map is part of what the Implementer Agent is required to output alongside its code and its walkthrough for every feature, so the maps stay synchronized with the codebase as it actually is rather than reflecting the codebase as it was when they were first written.
+\begin{listing}[H]
+\begin{center}
+\begin{promptbox}
+## 1. Directory Tree & File Overview
+
+The React frontend follows a structured domain-based layout under src/:
+
+src/
+|-- App.js              # Root router, protected route wrapper
+|-- index.js             # Application entry point
+|-- index.css             # Global CSS styles
+|-- constants.js            # Global constants (e.g., HTTP method colors)
+|
+|-- contexts/
+|   `-- AuthContext.js         # Global Auth Context & Hook
+|
+|-- hooks/
+|   |-- useWorkspace.js        # Workspace selection, validation, loading hook
+|   |-- useCollections.js       # Collections/Requests CRUD state management hook
+|   |-- useWorkspaceTabs.js      # Workspace tab and state cache hook
+|   |-- useWorkspaceTabs.test.js   # Tab management hook tests
+|   |-- useHistory.js         # Custom request history management hook
+|   |-- useHistory.test.js      # History hook tests
+|   `-- useInvitations.js       # Custom workspace invitations hook
+|
+|-- services/
+|   `-- api.js            # API base configuration (BASE_URL)
+\end{promptbox}
+\end{center}
+\caption{Excerpt of \texttt{FRONTEND\_STRUCTURE.md} showing the directory tree and file overview.}
+\label{lst:frontend-structure-tree}
+\end{listing}
+
+Unlike the rule set, which is written once and then only amended deliberately, the structure maps are treated as living documents that are expected to fall out of date unless something keeps them current. This is built directly into the workflow rather than left to chance: producing an updated structure map is part of what the Implementer Agent is required to output alongside its code and its walkthrough for every feature, so the maps stay synchronized with the codebase as it actually is rather than reflecting the codebase as it was when they were first written.
 

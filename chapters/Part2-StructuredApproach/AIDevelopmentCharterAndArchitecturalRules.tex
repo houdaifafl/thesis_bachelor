@@ -1,8 +1,29 @@
 \section{AI Development Charter and Architectural Rules}
 
-The first concrete step taken in Part 2 was creating an AI Development Charter --- a written set of architectural rules established before any feature implementation began, intended to be read by every agent involved in the workflow, rather than accumulated piecemeal as problems came up during development. Where Part 1's system prompt had started with only a partial set of conventions and grown reactively over the course of the project, this document existed in a mature form from the outset and applied uniformly across the whole of Part 2, not to one agent working alone but to all three roles in the workflow at once.
+The first concrete step taken in Part 2 was creating an AI Development Charter, \texttt{AGENTS.md} --- a written set of architectural rules established before any feature implementation began, intended to be read by every agent involved in the workflow, rather than accumulated piecemeal as problems came up during development. Where Part 1's system prompt had started with only a partial set of conventions and grown reactively over the course of the project, this document existed in a mature form from the outset and applied uniformly across the whole of Part 2, not to one agent working alone but to all three roles in the workflow at once.
 
-The rules themselves span both frontend and backend concerns. On the backend, they specify that the Flask application must use a single application-factory pattern, that each resource domain gets exactly one blueprint file rather than routes for different domains sharing a file, that route handlers act only as thin coordinators which parse a request and call a service function rather than containing business logic or direct database access themselves, and that service functions follow a fixed return pattern rather than each implementing its own error-handling convention. On the frontend, the rules require that all API calls go through the service layer rather than being made directly inside components, that shared state be handled through Context or hooks rather than read independently wherever it is needed, and that components respect defined size and responsibility boundaries rather than being left to grow. A further set of rules governs testing directly: before modifying any failing test, an agent is required to explain why the test failed, whether the fault lies with the implementation or with the test itself, and which requirement supports that judgment --- a rule that formalizes, as a mandatory step rather than a retrospective lesson, exactly the kind of reasoning the Test Failure Analysis Principle was built to describe after the fact.
+The rules themselves span both frontend and backend concerns, organized into named categories drawn directly from the file's own structure. On the backend: an Application Factory Pattern, Blueprint-per-Domain routing, with exactly one blueprint file per resource domain, and a Service Layer rule requiring route handlers to act only as thin coordinators while business logic and a fixed return pattern live in the service functions. On the frontend: a Service Layer rule requiring all API calls to go through \texttt{src/services/} rather than being made directly inside components, a State Ownership rule requiring shared state to be handled through Context or hooks rather than read independently wherever it is needed, and a Component Size Limit capping components at roughly 150 lines before they must be split. A further set of rules governs how a failing test must be diagnosed before being changed, formalizing, as a mandatory step rather than a retrospective lesson, exactly the reasoning the Test Failure Analysis Principle was built to describe after the fact. Drafting a rulebook this way benefits from AI assistance: producing a set of conventions broad and specific enough to cover an entire project by hand --- even before any code exists to check it against --- is itself a substantial task, and an agent can usefully draft a first set of conventions from established software-engineering practice as a starting point. The resulting draft was reviewed and adjusted before being adopted as binding. \Cref{lst:agents-md-backend-rules} shows a representative excerpt of the file itself.
+
+\begin{listing}[H]
+\begin{center}
+\begin{promptbox}
+## 7. BACKEND -- ARCHITECTURAL RULES
+
+### 7.1 Application Factory Pattern
+- The Flask app MUST use the `create_app()` factory in `app.py`.
+- Blueprint registration happens inside `create_app()`.
+- No global Flask `app` object is used outside the factory.
+
+### 7.2 Blueprint-per-Domain
+- Each resource domain has exactly **one blueprint file** in `backend/routes/`.
+- Blueprint names follow the pattern `<domain>_bp` (e.g., `auth_bp`, `workspace_bp`).
+- Route URL prefixes are embedded in the route decorators (not in `register_blueprint`).
+- New resource domains MUST get a new blueprint file. Do not add routes from a new domain to an existing blueprint.
+\end{promptbox}
+\end{center}
+\caption{Excerpt of \texttt{AGENTS.md} showing the Application Factory Pattern and Blueprint-per-Domain rules.}
+\label{lst:agents-md-backend-rules}
+\end{listing}
 
 Some of these rules are stated not as abstract principles but as direct references to a specific mistake already made in Part 1 --- the rule requiring foreign keys to parent entities to be non-nullable, for instance, names the nullable \textbf{\texttt{Collection.workspace\_id}} foreign key from Part 1 directly as the known violation not to repeat. The charter was, in this sense, partly written out of Part 1's own documented weaknesses rather than derived independently.
 
