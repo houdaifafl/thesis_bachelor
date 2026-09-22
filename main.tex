@@ -66,6 +66,16 @@
 \setstretch{1.25}
 \setlength{\emergencystretch}{2em}
 
+% -- Uniform vertical spacing (chapters, sections, floats, centered blocks) --
+\RedeclareSectionCommand[beforeskip=1\baselineskip, afterskip=0.5\baselineskip]{section}
+\renewcommand*{\chapterheadendvskip}{\vspace{0.5\baselineskip}}
+\setlength{\intextsep}{0.5\baselineskip}
+\setlength{\floatsep}{0.5\baselineskip}
+\setlength{\textfloatsep}{0.5\baselineskip}
+\setlength{\abovecaptionskip}{4pt}
+\setlength{\belowcaptionskip}{0pt}
+\renewenvironment{center}{\par\centering}{\par}
+
 \usepackage{amsmath}
 \usepackage{array}
 \usepackage{booktabs}
@@ -201,7 +211,7 @@
 
 % =============================================================================
 \begin{document}
-\flushbottom
+\raggedbottom
 
 \begin{titlepage}
     \enlargethispage{\baselineskip}
@@ -273,7 +283,6 @@ Aachen, \abgabedatum
 \chapter{Foundations}
 \subfile{chapters/Foundations/LargeLanguageModels}
 \subfile{chapters/Foundations/FromLLMsToAIAgents}
-\raggedbottom
 \subfile{chapters/Foundations/MultiAgentSystems}
 \subfile{chapters/Foundations/HumanAICollaboration}
 \subfile{chapters/Foundations/PromptEngineering}
@@ -282,13 +291,11 @@ Aachen, \abgabedatum
 \subfile{chapters/Foundations/OpenAPISpecificationsAndDocumentationDrift}
 
 \chapter{Methodology}
-\flushbottom
 \subfile{chapters/Methodology/StructureOfThePracticalProject}
 \subfile{chapters/Methodology/ToolsAndModelsUsed}
 \subfile{chapters/Methodology/EvaluationCriteria}
 
 \chapter{Part 1: Unstructured Development}
-\raggedbottom
 \subfile{chapters/Part1-UnstructuredDevelopment/InitialSituationAndObjectives}
 \subfile{chapters/Part1-UnstructuredDevelopment/PromptingWithoutAStructuralApproach}
 \subfile{chapters/Part1-UnstructuredDevelopment/SystemPromptContext}
@@ -299,7 +306,6 @@ Aachen, \abgabedatum
 \subfile{chapters/Part1-UnstructuredDevelopment/CriticalProblemsAndTheTestFailureAnalysisPrinciple}
 
 \chapter{Part 2: Structured Approach (AntiGravity)}
-\raggedbottom
 \subfile{chapters/Part2-StructuredApproach/MotivationForAStructuredApproach}
 \subfile{chapters/Part2-StructuredApproach/AIDevelopmentCharterAndArchitecturalRules}
 \subfile{chapters/Part2-StructuredApproach/ParallelAgentArchitecture}
@@ -308,25 +314,20 @@ Aachen, \abgabedatum
 \subfile{chapters/Part2-StructuredApproach/ProjectKnowledgeFiles}
 \subfile{chapters/Part2-StructuredApproach/OpenAPISpecificationAutomation}
 \subfile{chapters/Part2-StructuredApproach/IdentificationOfArchitecturalProblems}
-\raggedbottom
 
 \chapter{Comparison of Both Approaches}
-\flushbottom
 \subfile{chapters/Comparison/ComparisonPart1VsPart2}
 \subfile{chapters/Comparison/FeatureDiversity}
 
 \chapter{Evaluation}
-\raggedbottom
 \subfile{chapters/Evaluation/EvaluationCriteriaAndMethodology}
 \subfile{chapters/Evaluation/QualityOfGeneratedCode}
 \subfile{chapters/Evaluation/QualityAndValidityOfGeneratedTests}
 \subfile{chapters/Evaluation/ArchitecturalConformanceAndDocumentationConsistency}
 \subfile{chapters/Evaluation/EfficiencyAndEffort}
 \subfile{chapters/Evaluation/SummaryAssessment}
-\raggedbottom
 
 \chapter{Best Practices for Human-Agent Collaboration}
-\raggedbottom
 \subfile{chapters/BestPractices/ImportanceOfPromptPrecision}
 \subfile{chapters/BestPractices/RoleOfHumanOversight}
 \subfile{chapters/BestPractices/ArchitecturalGuardrails}
